@@ -131,3 +131,18 @@ Nesta parte, iremos analisar nossos dados graficamente afim de chegar a possivé
 
 #### Análise de Correlação
 Nesta etapa, iremos analisar quais variáveis são mais correlacionadas com o consumo de cerveja.
+```{r setup, include=FALSE}
+df_corr = select_if(df,is.numeric) %>% cor() %>% round(2)
+df_corr
+ggcorrplot(df_corr,type = "lower", # Retira o espelho da matriz
+           hc.order = T, # organiza os valores 
+           method = "circle", # formato dos componentes da matriz
+           lab = TRUE, # adicionar os valores das correlações
+           lab_size = 2,# Tamamho dos Valores
+           colors = c("firebrick", "white","blue"), # cores do gráfico
+           title = "Matriz de Correlação"
+           ) 
+```
+Analisando o gráfico de correlação, pode-se observar que existe uma correlação negativa de ‘consumo’ com "precipitação",ou seja,a medida que chove mais o consumo de cerveja diminui.
+
+Pode-se observar também, que existe uma correlação positiva de "consumo" com "temperatura máxima", ou seja, quanto maior a temperatura, maior será o consumo de cerveja.
