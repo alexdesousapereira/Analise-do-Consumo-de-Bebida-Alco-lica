@@ -1,0 +1,44 @@
+---
+title: "Consumo_de_Cerveja"
+author: "Alex de Sousa Pereira"
+date: "21/04/2021"
+output: html_document
+  theme: lumen
+---
+  (esse material foi 100% produzido usando a linguagem R)
+
+
+OBJETIVO DO TRABALHO
+
+** Este trabalho tem como objetivo  explorar dados do consumo de bebida alcoólica usando a biblioteca Rmarkdown, por meio de:
+  
+- Importação dos dados;
+- Análise descritiva dos dados;
+- Gráficos.
+
+### 1 - BIBLIOTECAS UTILIZADAS
+
+
+```{r setup, include=FALSE}
+# Carregando os pacotes 
+library(Amelia)
+library(ggplot2) 
+library(caret)
+library(reshape)
+library(dplyr) # Manipulação de dados
+library(e1071)
+library(stringr) # manipulação de strings
+library(lubridate) # manipulação de datas
+library(tidyr)
+library(ggcorrplot) # criação do gráfico de correlação
+
+```
+
+### 2 - CARREGANDO OS DADOS
+```{r setup, include=FALSE}
+df = read.csv("C:/Users/alexd/OneDrive/Meus Cursos/Marotona_Cientista_de_Dados/Teste_Estágio/consumo_cerveja.csv",sep = ";")
+
+# Visualizando os dados
+
+
+```
