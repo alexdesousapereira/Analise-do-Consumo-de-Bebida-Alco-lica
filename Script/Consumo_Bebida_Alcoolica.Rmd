@@ -69,7 +69,7 @@ Feito a transformação destas colunas, iremos verificar a presença de valores 
 ```{r setup, include=FALSE,warning=F}
 df[!complete.cases(df),] # Verifica valores nullos no dataset
 ```
-Como os valores que estão em nossas colunas podem ser relevantes para nossa análise, não iremos removê-los. Então, iremos substituir estes valores pela mediana de cada variável que se encontra com valor nulo. Outras soluções possiveís, seriam utilizar-mos a média, ou um modelo de machine learning para tentar prever esses valores para cada variável.
+Como os valores que estão em nossas colunas podem ser relevantes para nossa análise, não iremos remover as linhas que contêm valores nullos. Então, iremos substituir estes valores pela mediana de cada variável que se encontra com valor nulo. Outras soluções possiveís, seriam utilizar-mos a média, ou um modelo de machine learning para tentar prever esses valores para cada variável.
 ```{r setup, include=FALSE,warning=F}
 df[is.na(df$Temperatura.Maxima..C.),]$Temperatura.Maxima..C. = median(df$Temperatura.Maxima..C.,na.rm = T)
 df[is.na(df$Temperatura.Minima..C.),]$Temperatura.Minima..C. = median(df$Temperatura.Minima..C.,na.rm = T)
