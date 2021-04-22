@@ -33,6 +33,7 @@ library(ggcorrplot) # criação do gráfico de correlação
 
 O arquivo dos nossos dados corresponde a um arquivo csv. Para lermos este arquivo, utilizaremos a funçao "read_csv" que já é vinculada ao R. Logo após, analisaremos a dimensão de nossos dados através da função "dim", e utilizaremos a função "head" afim de analisar as 5 primeiras linhas de nosso dataset.
 ```{r setup, include=FALSE,warning=F}
+options(knitr.duplicate.label = "allow")
 df = read.csv("https://raw.githubusercontent.com/alexdesousapereira/Analise-do-Consumo-de-Bebida-Alcoolica/main/Dados/consumo_cerveja.csv",sep = ";")
 dim(df)
 head(df)
@@ -144,7 +145,7 @@ Analisando o gráfico de correlação, pode-se observar que existe uma correlaç
 
 Pode-se observar também, que existe uma correlação positiva de "consumo" com "temperatura máxima", ou seja, quanto maior a temperatura, maior será o consumo de cerveja.
 
-###CONSUMO DE BEBIDA ALCOÓLICA POR DIA DA SEMANA
+####CONSUMO DE CERVEJA POR DIA DA SEMANA
 Este tópico tem como objetivo analisar o consumo de bebida alcoólica por dia da semana.
 
 ```{r setup, include=FALSE,warning=F}
