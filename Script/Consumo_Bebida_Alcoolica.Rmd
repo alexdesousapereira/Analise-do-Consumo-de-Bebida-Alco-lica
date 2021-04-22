@@ -20,14 +20,10 @@ As bibliotecas que utilizaremos para este trabalho encontram-se abaixo:
 
 ```{r setup, include=FALSE}
 # Carregando os pacotes 
-library(ggplot2) 
-library(caret)
-library(reshape)
+library(ggplot2) #
 library(dplyr) # Manipulação de dados
-library(e1071)
 library(stringr) # manipulação de strings
 library(lubridate) # manipulação de datas
-library(tidyr)
 library(ggcorrplot) # criação do gráfico de correlação
 
 ```
