@@ -3,7 +3,6 @@ title: "Consumo_de_Cerveja"
 author: "Alex de Sousa Pereira"
 date: "21/04/2021"
 output: html_document
-  theme: lumen
 ---
   (esse material foi 100% produzido usando a linguagem R)
 
@@ -17,11 +16,10 @@ OBJETIVO DO TRABALHO
 - Gráficos.
 
 ### 1 - BIBLIOTECAS UTILIZADAS
-
+As bibliotecas que utilizaremos para este trabalho encontram-se abaixo: 
 
 ```{r setup, include=FALSE}
 # Carregando os pacotes 
-library(Amelia)
 library(ggplot2) 
 library(caret)
 library(reshape)
@@ -35,10 +33,101 @@ library(ggcorrplot) # criação do gráfico de correlação
 ```
 
 ### 2 - CARREGANDO OS DADOS
+O arquivo dos nossos dados corresponde a um arquivo csv. Para lermos este arquivo, utilizaremos a funçao "read_csv" que já vinculada ao R. Logo após, analisaremos a dimensão de nossos dados através da função "dim", e utilizaremos a função "head" afim de analisar as 5 primeiras linhas de nosso dataset.
 ```{r setup, include=FALSE}
-df = read.csv("C:/Users/alexd/OneDrive/Meus Cursos/Marotona_Cientista_de_Dados/Teste_Estágio/consumo_cerveja.csv",sep = ";")
-
-# Visualizando os dados
-
+df = read.csv("https://raw.githubusercontent.com/alexdesousapereira/Analise-do-Consumo-de-Bebida-Alcoolica/main/Dados/consumo_cerveja.csv",sep = ";")
+dim(df)
+head(df)
 
 ```
+### 3 - DESCRIÇÃO DAS COLUNAS
+Descrevendo as colunas:
+
+Data: dia que foram coletados os dados.
+Temperatura média (C): temperatura média para o respectivo dia.
+Temperatura mínima (C): temperatura mínima para o respectivo dia.
+Temperatura máxima (C): temperatura máxima para o respectivo dia.
+Precipitação (mm): quantidade em mililitros de chuva para o respectivo dia.
+Final de Semana: se o respectivo dia era final de semana
+(1=sim, 0=não).
+Consumo de cerveja (litros): consumo de cerveja em litros para o respectivo dia.
+Observando o resultado acima, verificamos a quantidade total de registros com 365 linhas e 7 colunas.
+
+### 4 - LIMPEZA E TRANSFORMAÇÃO DAS VARIÁVEIS
+Primeiramente iremos analisar o tipo de nossas variáveis.
+```{r setup, include=FALSE}
+str(df)
+
+```
+Logo, verificamos que algumas variáveis estão em formato caractere. Então, iremos fazer a transformarção destas variáveis.
+```{r setup, include=FALSE}
+df$Temperatura.Maxima..C. =  df$Temperatura.Maxima..C. %>% str_replace('[,]', '.')%>% as.double()
+df$Temperatura.Media..C. = df$Temperatura.Media..C. %>% str_replace('[,]', '.') %>% as.double()
+df$Temperatura.Minima..C. = df$Temperatura.Minima..C. %>% str_replace('[,]', '.') %>% as.double()
+df$Precipitacao..mm. = df$Precipitacao..mm. %>% str_replace('[,]', '.') %>% as.double()
+
+```
+Feito a transformação destas colunas, iremos verificar a presença de valores nulos em nosso dataset.
+```{r setup, include=FALSE}
+df[!complete.cases(df),] # Verifica valores nullos no dataset
+```
+Como os valores que estão em nossas colunas podem ser relevantes para nossa análise, não iremos removê-los. Então, iremos substituir estes valores pela mediana de cada variável que se encontra com valor nulo. Outras soluções possiveís, seriam utilizar-mos a média, ou um modelo de machine learning para tentar prever esses valores para cada variável.
+```{r setup, include=FALSE}
+df[is.na(df$Temperatura.Maxima..C.),]$Temperatura.Maxima..C. = median(df$Temperatura.Maxima..C.,na.rm = T)
+df[is.na(df$Temperatura.Minima..C.),]$Temperatura.Minima..C. = median(df$Temperatura.Minima..C.,na.rm = T)
+df[is.na(df$Temperatura.Media..C.),]$Temperatura.Media..C. = median(df$Temperatura.Media..C.,na.rm = T)
+df[!complete.cases(df),] # Verificando se ainda existem valores nullos no dataset
+```
+Agora, iremos fazer uma transformação afim de facilitar em nossa análise de dados. Para tanto, iremos transformar a coluna "Final de Semana", em que:
+0 = "Dia da Semana"
+1 = "Final de Semana"
+```{r setup, include=FALSE}
+#Convertendo coluna Final de Semana
+# Vamos Converter algumas variáveis agora
+df$Final.de.Semana = cut(df$Final.de.Semana, 
+                         c(-1,0,1), 
+                         labels = c("Dia de Semana","Fim de Semana"))
+```
+### CRIANDO COLUNA DIA E MÊS
+Utilizare-mos o pacote "lubridate", afim de criar uma coluna dia da semana e uma coluna mês para ajudar na análise dos dados.
+
+```{r setup, include=FALSE}
+# Criando coluna Dia da Semana
+df$Dia.da.Semana = c(seq(1:length(df$Data)))
+for (i in 1:length(df$Dia.da.Semana)){
+  df$Dia.da.Semana[i] = wday(df$Data[i]) 
+}
+df$Dia.da.Semana= cut(df$Dia.da.Semana, 
+                         c(0,1,2,3,4,5,6,7), 
+                         labels = c("Domingo",
+                                    "Segunda",
+                                    "Terça",
+                                    "Quarta",
+                                    "Quinta",
+                                    "Sexta",
+                                    "Sábado"))
+# Criando coluna Mês 
+df$Mes = c(seq(1:length(df$Data)))
+for (i in 1:length(df$Data)){
+  df$Mes[i] = month(df$Data[i])
+}
+df$Mes= cut(df$Mes, 
+              c(0,1,2,3,4,5,6,7,8,9,10,11,12), 
+              labels = c("Janeiro",
+                         "Fevereiro",
+                         "Março",
+                         "Abril",
+                         "Maio",
+                         "Junho",
+                         "Julho",
+                         "Agosto",
+                         "Setembro",
+                         "Outubro",
+                         "Novembro",
+                         "Dezembro"))
+```
+### ANÁLISE DOS DADOS
+Nesta parte, iremos analisar nossos dados graficamente afim de chegar a possivéis conclusões.
+
+#### Análise de Correlação
+Nesta etapa, iremos analisar quais variáveis são mais correlacionadas com o consumo de cerveja.
