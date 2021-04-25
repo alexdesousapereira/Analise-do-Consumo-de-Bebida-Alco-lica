@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 # Análise do Consumo de Cerveja
+***
 Esse repositório contém um projeto exclusivo sonre **Análise do Consumo de Cerveja** em uma determina cidade codificado totalmente na linguagens R . O projeto e seu respectivo código e dataset podem ser encontrado dentro das determinadas pastas.
-=======
+
 # Análise do Consumo de Bebida Alcoólica
 ***
 Esse repositório contém um projeto exclusivo sobre **Análise do Consumo de Bebida Alcoólica** em uma determina cidade codificado totalmente na linguagens R . O projeto e seu respectivo código e dataset podem ser encontrado dentro das determinadas pastas.
->>>>>>> 8f4b82e84a363dfd7125c89b4f18a1e77bafc6ea
 
 # Direitos de Uso
 ***
