@@ -7,29 +7,33 @@ output: html_document
   (esse material foi 100% produzido usando a linguagem R)
 
 
-### OBJETIVO DO TRABALHO
+## OBJETIVO DO TRABALHO
 
 Este trabalho tem como objetivo  explorar dados do consumo de cerveja usando a biblioteca Rmarkdown, por meio de:
 
-- Importação dos dados;
+- Transformações dos dados;
 - Análise descritiva dos dados;
-- Gráficos.
+- Análise multivariada dos dados.
 
-### 1 - BIBLIOTECAS UTILIZADAS
+## PARTE 01 - TRANSFORMAÇÕES DOS DADOS
+
+## BIBLIOTECAS A SEREM UTILIZADAS
 
 As bibliotecas que utilizaremos para este trabalho encontram-se abaixo: 
 
 ```{r,message=FALSE,warning=F}
 # Carregando os pacotes 
-library(ggplot2) # Criação de gráficos
+
 library(dplyr) # Manipulação de dados
 library(stringr) # manipulação de strings
 library(lubridate) # manipulação de datas
-library(ggcorrplot) # criação do gráfico de correlação
+
 
 ```
 
-### 2 - CARREGANDO OS DADOS
+## PARTE 01 - TRANSFORMAÇÕES DOS DADOS
+
+### CARREGANDO OS DADOS
 
 O arquivo dos nossos dados corresponde a um arquivo csv. Para lermos este arquivo, utilizaremos a funçao "read_csv" que já é vinculada ao R. 
 
@@ -43,7 +47,7 @@ head(df)
 
 ```
 
-### 3 - DESCRIÇÃO DAS COLUNAS
+### DESCRIÇÃO DAS COLUNAS
 
 Descrevendo as colunas:
 
@@ -65,7 +69,7 @@ Consumo de cerveja (litros): consumo de cerveja em litros para o respectivo dia.
 
 Observando o resultado acima, verificamos a quantidade total de registros com 365 linhas e 7 colunas.
 
-### 4 - LIMPEZA E TRANSFORMAÇÃO DAS VARIÁVEIS
+### LIMPEZA E TRANSFORMAÇÃO DAS VARIÁVEIS
 
 Primeiramente iremos analisar o tipo de nossas variáveis.
 
@@ -155,8 +159,21 @@ df$Mes= cut(df$Mes,
                          "Dezembro"))
 ```
 
-### ANÁLISE DOS DADOS
+
+## PARTE 2 - ANÁLISE DESCRITIVA DOS DADOS
 Nesta parte, iremos analisar nossos dados graficamente afim de chegar a possivéis conclusões.
+
+## BIBLIOTECAS A SEREM UTILIZADAS
+
+As bibliotecas que utilizaremos para este trabalho encontram-se abaixo: 
+
+
+```{r,message=FALSE,warning=F}
+# Carregando os pacotes 
+library(ggplot2) # Criação de gráficos
+library(ggcorrplot) # criação do gráfico de correlação
+
+```
 
 #### Análise de Correlação
 
@@ -253,4 +270,29 @@ ggplot(X) +
 Analisando, pode-se observar que temos um consumo maior de cerveja nos fins de semana do que nos dias de semana.
 
 
+## PARTE 02 - ANÁLISE MULTIVARIADA
+  Neste etapa do projeto, iremos utilizaremos da análise multivariada com a finalidade de prever o consumo de cerveja.
+  
+### BIBLIOTECAS A SEREM UTILIZADAS
+
+As bibliotecas que utilizaremos para este trabalho encontram-se abaixo:
+
+```{r,message=FALSE,warning=F}
+
+library(MASS) #Pacote para a Análise de Regressão (modelagem linear)
+library(lmtest) #Pacote de Testes
+library(car)#Pacote realizar teste de multicolinearidade
+library(forecast)#Pacote para utilizar função Box.Cox
+
+```
+
+### CARREGANDO O MODELO
+lm = 
+  
+  
+  
+  
+  
+
+  
 
