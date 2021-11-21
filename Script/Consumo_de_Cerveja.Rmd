@@ -31,8 +31,6 @@ library(lubridate) # manipulação de datas
 
 ```
 
-## PARTE 01 - TRANSFORMAÇÕES DOS DADOS
-
 ### CARREGANDO OS DADOS
 
 O arquivo dos nossos dados corresponde a um arquivo csv. Para lermos este arquivo, utilizaremos a funçao "read_csv" que já é vinculada ao R. 
@@ -77,6 +75,14 @@ Primeiramente iremos analisar o tipo de nossas variáveis.
 str(df)
 
 ```
+Transformaremos primeiramente o período dos dados, que foi designado como sendo de 2019, mas pertence ao ano de 2015.
+```{r,message=FALSE,warning=F}
+data_cor <- sub('2019','2015',df$Data)
+data_cor <- sub('/','-',data_cor)
+data_cor <- sub('/','-',data_cor)
+df$Data <- data_cor
+```
+
 
 Logo, verificamos que algumas variáveis estão em formato caractere. Então, iremos fazer a transformarção destas variáveis.
 
@@ -286,13 +292,133 @@ library(forecast)#Pacote para utilizar função Box.Cox
 
 ```
 
-### CARREGANDO O MODELO
-lm = 
-  
-  
-  
-  
-  
+### REDUZINDO O NOME DAS VARIÁVEIS
+Antes de fazermos a análise preditiva, iremos reduzir o nome das váriaveis com o objetivo de facilitar em nossa análise.
 
-  
+```{r,message=FALSE,warning=F}
+df <- df %>% dplyr::rename(
+    dia = Data,
+    temp_med = `Temperatura.Media..C.`,
+    temp_min = `Temperatura.Minima..C.`,
+    temp_max = `Temperatura.Maxima..C.`,
+    precip = `Precipitacao..mm.`,
+    fds = `Final.de.Semana`,
+    consumo = `Consumo.de.cerveja..litros.`
+  )
+```
+
+### ENCONTRANDO O MELHOR MODELO 
+  Agora, iremos nossas análise para tentar encontrar o melhor modelo preditivo. 
+```{r,message=FALSE,warning=F}
+
+modelo1=lm(consumo~ temp_med+temp_min+temp_max+precip+fds,
+          data = df)
+summary(modelo1)
+```
+Note que as variaveis temperatura mínima e temperatura média não se demonstraram significativas ao nível de 5% de significância. Deste modo, iremos removê-las do nosso modelo!
+```{r,message=FALSE,warning=F}
+
+modelo2=lm(consumo~temp_max+precip+fds,
+          data = df)
+summary(modelo2)
+```
+
+### ANÁLISE DE RESÍDUOS
+Neste etapa, iremos análisar os presuposto de um modelo de regressão linear. Sendo eles:
+
+1-) Normalidade;
+2-) Homocedasticidade;
+3-) Outliers;
+4-) Indepedência de residuos;
+5-) Multicolineariedade.
+
+```{r,message=FALSE,warning=F}
+#Análise Grafica de Residuos
+
+par(mfrow=c(2,2))
+plot(modelo2,which = c(1:4),pch=20)
+
+```
+O primeiro gráfico, nos demostra os resíduos pelos valores ajustados, a partir dele pode-mos ver a lineriadade de nossos dados, logo que a linha vermelha se encontra aproximadamente horizontal.
+
+O segundo, nos demostra que resíduos não seguem uma distribuição normal, logo que os resíduos não se encontram próximos da linha pontilhada. 
+
+O terceiro gráfico nos demostra que os resíduos são homocedásticos, logo que a maioria dos residuos seguem um padrão retangular.
+
+
+O Quarto gráfico nós demostra que não existem a presença de outliers em nossos dados, logo que as observações tem uma cook's distance < 1 .
+
+Agora, iremos analisar teste por teste a fim de confirmar nossas suposições visuais.
+
+1-) Normalidade -> a partir do shapiro.test podemos verificar se os dados seguem uma normal padrão.
+
+```{r,message=FALSE,warning=F}
+#Análise de Normalidade
+
+shapiro.test(modelo2$residuals)
+
+```
+Os resíduos não seguem uma normal padrão, logo que o p-valor < 0,05.
+
+2-) Outliers nos resíduos-> por meio do código abaixo é possível identificar se existe outliers nos resíduos
+
+```{r,message=FALSE,warning=F}
+summary(rstandard(modelo2))
+
+```
+Não existem outliers nos resíduos.
+
+3-) Teste de Homocedasticidade -> por meio do código abaixo é possível identificar se existe homocedasticidade.
+
+```{r,message=FALSE,warning=F}
+bptest(modelo2)
+
+```
+Observa-se que não há homocedasticidade. No entanto, nosso teste não é válido, logo que a nossa distribuição não segue uma normal padrão.
+4-) Teste de Indepedência de Resíduos
+```{r,message=FALSE,warning=F}
+durbinWatsonTest(modelo2)
+
+```
+Pelo teste observa-se que não existe indepedência de resíduos, logo que teste de DurbinWatson encontra-se entre 1,5 e 2 e o p-value>0,05. No entanto, nosso teste não é valido, pois nossa distribuição não segue uma normal padrão.
+
+
+5-) Analisando a multicolienariedade -> por meio do código abaixo é possível identificar se existe multicolienariedade.
+
+```{r,message=FALSE,warning=F}
+vif(modelo2)
+
+```
+Não existe multicolinariedade entre as váriveis independentes, logo que o VIF < 10.
+
+
+### TRANSFORMAÇÃO DO MODELO
+Agora iremos transformar nosso modelo de regressão com a finalidade de deixa-lo ajustado para que sega uma distribuição normal. A partir da transformação Box-cox é possível encontrar a melhor transformação para o modelo.
+
+```{r,message=FALSE,warning=F}
+lambda<- BoxCox.lambda(modelo2)
+lambda
+
+Y <- BoxCox(df$consumo, lambda)
+```
+
+
+
+```{r,message=FALSE,warning=F}
+
+modelo3=lm(Y~temp_max+precip+fds,
+          data = df)
+summary(modelo3)
+
+
+```
+### ### ANÁLISE DE RESÍDUOS PARTE 02
+Agora fazeremos novamente a análise dos resíduos com o modelo ajustado.
+
+```{r,message=FALSE,warning=F}
+#Análise de Normalidade
+
+shapiro.test(modelo3$residuals)
+
+```
 
