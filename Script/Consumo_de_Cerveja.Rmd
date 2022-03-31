@@ -276,6 +276,7 @@ ggplot(X) +
 Analisando, pode-se observar que temos um consumo maior de cerveja nos fins de semana do que nos dias de semana.
 
 
+<<<<<<< HEAD
 ## PARTE 03 - ANÁLISE MULTIVARIADA
   
   Neste etapa do projeto, iremos utilizaremos da análise multivariada com a finalidade de prever o consumo de cerveja.
@@ -295,6 +296,11 @@ library(forecast)#Pacote para utilizar função Box.Cox
 
 ### REDUZINDO O NOME DAS VARIÁVEIS
 Antes de fazermos a análise preditiva, iremos reduzir o nome das váriaveis com o objetivo de facilitar em nossa análise.
+=======
+
+  
+  
+>>>>>>> 6fcccb88a01e3fa16175a65323d0d04881f09f58
 
 ```{r,message=FALSE,warning=F}
 df <- df %>% dplyr::rename(
