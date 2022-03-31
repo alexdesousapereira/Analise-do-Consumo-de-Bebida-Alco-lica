@@ -7,7 +7,7 @@ output: html_document
   (esse material foi 100% produzido usando a linguagem R)
 
 
-## OBJETIVO DO TRABALHO
+# OBJETIVO DO TRABALHO
 
 Este trabalho tem como objetivo  explorar dados do consumo de cerveja usando a biblioteca Rmarkdown, por meio de:
 
@@ -17,7 +17,7 @@ Este trabalho tem como objetivo  explorar dados do consumo de cerveja usando a b
 
 ## PARTE 01 - TRANSFORMAÇÕES DOS DADOS
 
-## BIBLIOTECAS A SEREM UTILIZADAS
+### BIBLIOTECAS A SEREM UTILIZADAS
 
 As bibliotecas que utilizaremos para este trabalho encontram-se abaixo: 
 
@@ -169,7 +169,7 @@ df$Mes= cut(df$Mes,
 ## PARTE 2 - ANÁLISE DESCRITIVA DOS DADOS
 Nesta parte, iremos analisar nossos dados graficamente afim de chegar a possivéis conclusões.
 
-## BIBLIOTECAS A SEREM UTILIZADAS
+### BIBLIOTECAS A SEREM UTILIZADAS
 
 As bibliotecas que utilizaremos para este trabalho encontram-se abaixo: 
 
@@ -181,7 +181,7 @@ library(ggcorrplot) # criação do gráfico de correlação
 
 ```
 
-#### Análise de Correlação
+### ANÁLISE DE CORRELAÇÃO
 
 Nesta etapa, iremos analisar quais variáveis são mais correlacionadas com o consumo de cerveja.
 
@@ -201,7 +201,7 @@ Analisando o gráfico de correlação, pode-se observar que existe uma correlaç
 
 Pode-se observar também, que existe uma correlação positiva de "consumo" com "temperatura máxima", ou seja, quanto maior a temperatura, maior será o consumo de cerveja.
 
-#### CONSUMO DE CERVEJA POR DIA DA SEMANA
+### CONSUMO DE CERVEJA POR DIA DA SEMANA
 
 Este tópico tem como objetivo analisar o consumo de bebida alcoólica por dia da semana.
 
@@ -224,7 +224,7 @@ ggplot(df) +
 
 Observando o gráfico, pode-se notar que temos um maior consumo de cerveja, consequentemente na segunda, quarta e sexta - feira. Em que, somente na quinta - feira, tivemos valores fora da média.
 
-#### CONSUMO DE CERVEJA NO MÊS
+### CONSUMO DE CERVEJA NO MÊS
 
 Este tópico tem como objetivo analisar o consumo de bebida alcoólica por mês.
 
@@ -251,7 +251,7 @@ ggplot(df) +
 
 Observa-se que o mês de outubro, foi aquele que tivemos o maior consumo de cerveja e, consequetemente o mês abril foi o período com menor consumo.
 
-#### CONSUMO MÉDIO DE CERVEJA NO FINAL DE SEMANA
+### CONSUMO MÉDIO DE CERVEJA NO FINAL DE SEMANA
 
 Este tópico têm como principal objetivo analisar o consumo de cerveja nos finais de semana.
 
@@ -276,7 +276,8 @@ ggplot(X) +
 Analisando, pode-se observar que temos um consumo maior de cerveja nos fins de semana do que nos dias de semana.
 
 
-## PARTE 02 - ANÁLISE MULTIVARIADA
+## PARTE 03 - ANÁLISE MULTIVARIADA
+  
   Neste etapa do projeto, iremos utilizaremos da análise multivariada com a finalidade de prever o consumo de cerveja.
   
 ### BIBLIOTECAS A SEREM UTILIZADAS
@@ -396,13 +397,13 @@ Não existe multicolinariedade entre as váriveis independentes, logo que o VIF 
 Agora iremos transformar nosso modelo de regressão com a finalidade de deixa-lo ajustado para que sega uma distribuição normal. A partir da transformação Box-cox é possível encontrar a melhor transformação para o modelo.
 
 ```{r,message=FALSE,warning=F}
-lambda<- BoxCox.lambda(modelo2)
+lambda<- BoxCox.lambda(modelo2$residuals)
 lambda
 
 Y <- BoxCox(df$consumo, lambda)
 ```
 
-
+Feito a transformação, iremos carregar novamente o modelo ajustado.
 
 ```{r,message=FALSE,warning=F}
 
@@ -412,7 +413,7 @@ summary(modelo3)
 
 
 ```
-### ### ANÁLISE DE RESÍDUOS PARTE 02
+
 Agora fazeremos novamente a análise dos resíduos com o modelo ajustado.
 
 ```{r,message=FALSE,warning=F}
